@@ -13,6 +13,9 @@
 # limitations under the License.
 
 import torch
+import numpy as np
+import cv2
+from scipy import misc
 from options.train_options import TrainOptions
 from loaders import aligned_data_loader
 from models import pix2pix_model
@@ -29,17 +32,30 @@ model.switch_to_eval()
 video_list = 'D:/A-Eye For The Blind/2dtodepth/infile/'
 save_path = 'D:/A-Eye For The Blind/2dtodepth/outfile/'
 
-user_uid = 23 # set up once
+user_uid = 23
 
 def main():
 
 	video_data_loader = aligned_data_loader.DAVISDataLoader(video_list, BATCH_SIZE)
 	video_dataset = video_data_loader.load_data()
+	x= 0
 	for i, data in enumerate(video_dataset):
-#	    print(i)
-	    stacked_img = data[0]
-	    targets = data[1]
-	    model.run_and_save_DAVIS(stacked_img, targets, save_path)
+		x +=1
+		stacked_img = data[0]
+		targets = data[1]
+		output = model.run_and_save_DAVIS(stacked_img, targets, save_path)
+		num = np.count_nonzero(output >= 0)
+		print(output.shape)
+		height, width, _ = output.shape
+		width_cutoff = width // 2
+		half1 = output[:, :width_cutoff]
+		half2 = output[:, width_cutoff:]
+		width_cutoff = width // 4
+		s1 = half1[:, :width_cutoff]
+		s2 = half1[:, width_cutoff:]
+		s3 = half2[:, :width_cutoff]
+		s4 = half2[:, width_cutoff:]
+		print(s4)
 
 if __name__ == '__main__':
-    main()
+	main()
