@@ -5,7 +5,7 @@ var firebaseConfig = {
     authDomain: "a-eye-for-the-blind.firebaseapp.com",
     projectId: "a-eye-for-the-blind",
     storageBucket: "a-eye-for-the-blind.appspot.com",
-    databaseURL: "https://livermorerefuel-default-rtdb.firebaseio.com/",
+    databaseURL: "https://a-eye-for-the-blind-default-rtdb.firebaseio.com/",
     messagingSenderId: "369582010992",
     appId: "1:369582010992:web:b8fa311591a4f5b442fab5"
 };
