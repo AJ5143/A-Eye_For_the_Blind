@@ -83,6 +83,50 @@ function fullname(){
     });
 }
 
+var slideIndex = 1;
+showSlides(slideIndex);
+
+// Next/previous controls
+function plusSlides(n) {
+  showSlides(slideIndex += n);
+}
+
+// Thumbnail image controls
+function currentSlide(n) {
+  showSlides(slideIndex = n);
+}
+
+function showSlides(n) {
+  var i;
+  var slides = document.getElementsByClassName("mySlides");
+  var dots = document.getElementsByClassName("dot");
+  if (n > slides.length) {slideIndex = 1}
+  if (n < 1) {slideIndex = slides.length}
+  for (i = 0; i < slides.length; i++) {
+      slides[i].style.display = "none";
+  }
+  for (i = 0; i < dots.length; i++) {
+      dots[i].className = dots[i].className.replace(" active", "");
+  }
+  slides[slideIndex-1].style.display = "block";
+  dots[slideIndex-1].className += " active";
+}
+
+function getImages() {
+    firebase.auth().onAuthStateChanged((user) => {
+        if (user) {
+          // User logged in already or has just logged in.
+          uid = user.uid;
+          database.ref('users/' + uid + '/images').once('value').then(function (snapshot) {
+            var keys = Object.keys(snapshot);
+            console.log(keys)
+          })
+        } else {
+          // User not logged in or has just logged out.
+        }
+    });
+}
+
 
 var getJSON = function(url, callback) {
     var xhr = new XMLHttpRequest();
