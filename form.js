@@ -83,43 +83,22 @@ function fullname(){
     });
 }
 
-var slideIndex = 1;
-showSlides(slideIndex);
-
-// Next/previous controls
-function plusSlides(n) {
-  showSlides(slideIndex += n);
-}
-
-// Thumbnail image controls
-function currentSlide(n) {
-  showSlides(slideIndex = n);
-}
-
-function showSlides(n) {
-  var i;
-  var slides = document.getElementsByClassName("mySlides");
-  var dots = document.getElementsByClassName("dot");
-  if (n > slides.length) {slideIndex = 1}
-  if (n < 1) {slideIndex = slides.length}
-  for (i = 0; i < slides.length; i++) {
-      slides[i].style.display = "none";
-  }
-  for (i = 0; i < dots.length; i++) {
-      dots[i].className = dots[i].className.replace(" active", "");
-  }
-  slides[slideIndex-1].style.display = "block";
-  dots[slideIndex-1].className += " active";
-}
-
 function getImages() {
     firebase.auth().onAuthStateChanged((user) => {
         if (user) {
           // User logged in already or has just logged in.
           uid = user.uid;
-          database.ref('users/' + uid + '/images').once('value').then(function (snapshot) {
-            var keys = Object.keys(snapshot);
-            console.log(keys)
+          database.ref('users/' + uid +'/images').once('value').then(function (snapshot) {
+            document.getElementById("first").src=snapshot.val().i0;
+            document.getElementById("second").src=snapshot.val().i1;
+            document.getElementById("third").src=snapshot.val().i2;
+            document.getElementById("fourth").src=snapshot.val().i3;
+            document.getElementById("fifth").src=snapshot.val().i4;
+            document.getElementById("sixth").src=snapshot.val().i5;
+            document.getElementById("seventh").src=snapshot.val().i6;
+            document.getElementById("eight").src=snapshot.val().i7;
+            document.getElementById("ninth").src=snapshot.val().i8;
+            document.getElementById("tenth").src=snapshot.val().i9;
           })
         } else {
           // User not logged in or has just logged out.
