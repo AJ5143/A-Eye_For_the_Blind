@@ -18,7 +18,7 @@
 from firebase import Firebase
 import sys
 import os
-from datetime import datetime
+import datetime
 import geocoder
 import torch
 import pyttsx3
@@ -55,10 +55,13 @@ def finalcommand(s1, s2, s3, s4):
 	return [left, center, right]
 
 
-def time():
-	now = datetime.now()
-	current_time = now.strftime("%H:%M:%S")
-	return current_time
+# def time():
+# 	now = datetime.datetime.now()
+# 	today = datetime.date.today()
+# 	current_date = today.strftime("%B %d, %Y")
+# 	current_time = now.strftime("%H:%M:%S")
+# 	dateinfo = current_date + ' ' + current_time
+# 	return dateinfo
 
 def main():
 	config = {
@@ -67,7 +70,7 @@ def main():
 		"storageBucket": "a-eye-for-the-blind.appspot.com",
 		"databaseURL": "https://a-eye-for-the-blind-default-rtdb.firebaseio.com/",
 	}
-	uid = "EUzyQOAmWJY7F3IuZrajTUOp1aE3"  # unique user ID, must set before running
+	uid = "yQowLXfAMddiITuMFASMoKlSGyh1"  # unique user ID, must set before running
 	email = 'saranggoel06@gmail.com'
 	password = 'breadcake73'
 	firebase = Firebase(config)
@@ -94,13 +97,18 @@ def main():
 	model.switch_to_eval()
 	video_list = 'D:/A-Eye For The Blind/2dtodepth/infile1/'
 	save_path = 'D:/A-Eye For The Blind/2dtodepth/outfile/'
-	uid = 'EUzyQOAmWJY7F3IuZrajTUOp1aE3'
+	uid = 'yQowLXfAMddiITuMFASMoKlSGyh1'
 	# initialize the camera
 	cam = cv2.VideoCapture(cv2.CAP_DSHOW)  # 0 -> index of camera
+	x = 0
 	while True:
 		s, img = cam.read()
 		cv2.imwrite("D:/A-Eye For The Blind/2dtodepth/infile1/filename.jpg", img)  # save image
-		storage.child(f"images/{uid} {time()}.jpg").put("D:/A-Eye For The Blind/2dtodepth/infile1/filename.jpg", user['idToken'])
+		# filename = uid + ' ' + time()
+		storage.child(f"images/{str(x)}.jpg").put("D:/A-Eye For The Blind/2dtodepth/infile1/filename.jpg", user['idToken'])
+		url = storage.child(f"images/{str(x)}.jpg").get_url(user['idToken'])
+		data = {f"{str(x)}": f"{url}"}
+		db.child(f"users/{uid}").child("images").update(data)
 		video_data_loader = aligned_data_loader.DAVISDataLoader(video_list, BATCH_SIZE)
 		video_dataset = video_data_loader.load_data()
 		for i, data in enumerate(video_dataset):
@@ -129,7 +137,8 @@ def main():
 					engine.say("Move left.")
 			engine.runAndWait()
 		os.remove("D:/A-Eye For The Blind/2dtodepth/infile1/filename.jpg")
-		if cv2.waitKey(1) == ord('q'):
+		x += 1
+		if cv2.waitKey(33) == ord('a'):
 			break
 	cam.release()
 
