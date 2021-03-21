@@ -105,9 +105,9 @@ def main():
 		s, img = cam.read()
 		cv2.imwrite("D:/A-Eye For The Blind/2dtodepth/infile1/filename.jpg", img)  # save image
 		# filename = uid + ' ' + time()
-		storage.child(f"images/{str(x)}.jpg").put("D:/A-Eye For The Blind/2dtodepth/infile1/filename.jpg", user['idToken'])
-		url = storage.child(f"images/{str(x)}.jpg").get_url(user['idToken'])
-		data = {f"{str(x)}": f"{url}"}
+		storage.child(f"images/i{str(x)}.jpg").put("D:/A-Eye For The Blind/2dtodepth/infile1/filename.jpg", user['idToken'])
+		url = storage.child(f"images/i{str(x)}.jpg").get_url(user['idToken'])
+		data = {f"i{str(x)}": f"{url}"}
 		db.child(f"users/{uid}").child("images").update(data)
 		video_data_loader = aligned_data_loader.DAVISDataLoader(video_list, BATCH_SIZE)
 		video_dataset = video_data_loader.load_data()
